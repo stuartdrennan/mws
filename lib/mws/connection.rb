@@ -59,7 +59,7 @@ module Mws
         @log.debug "Hash:\n#{req['Content-MD5']}\n"
         req.body = body
       end
-      res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do | http |
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do | http |
         http.request req
       end
       raise Errors::ServerError.new(code: res.code, message: res.msg) if res.body.nil?
