@@ -28,31 +28,11 @@ module Mws
       request(:get, path, params, nil, overrides)
     end
 
-    def get_no_parse(path, params, overrides)
-      request_no_parse(:get, path, params, nil, overrides)
-    end
-
     def post(path, params, body, overrides)
       request(:post, path, params, body, overrides)
     end
 
-    def post_no_parse(path, params, body, overrides)
-      request_no_parse(:post, path, params, body, overrides)
-    end
-
-    private
-
-    def request_no_parse(method, path, params, body, overrides)
-      query = Query.new({
-        action: overrides[:action],
-        version: overrides[:version],
-        merchant: @merchant,
-        access: @access,
-        list_pattern: overrides.delete(:list_pattern)
-      }.merge(params))
-      signer = Signer.new method: method, host: @host, path: path, secret: @secret
-      response_for(method, path, signer.sign(query), body)
-    end
+  private
 
     def request(method, path, params, body, overrides)
       query = Query.new({
